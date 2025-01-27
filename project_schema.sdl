@@ -1,0 +1,3 @@
+  input IssueCreateInput {
+    """The project associated with the issue."""
+    projectId: String
