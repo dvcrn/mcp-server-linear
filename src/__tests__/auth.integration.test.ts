@@ -1,6 +1,21 @@
 import { describe, it, expect, beforeAll } from '@jest/globals';
-import { LinearAuth } from '../auth';
-import { LinearClient } from '@linear/sdk';
+import { LinearAuth } from '../auth.js';
+import { GraphQLOperation } from '../core/types/graphql.types.js';
+import { QueryBuilder } from '../infrastructure/graphql/query-builder.js';
+
+interface ViewerQuery {
+  viewer: {
+    id: string;
+  };
+}
+
+const viewerQuery: GraphQLOperation<ViewerQuery> = QueryBuilder.query('ViewerQuery')
+  .select({
+    viewer: {
+      id: true
+    }
+  })
+  .buildOperation();
 
 // Skip tests if no credentials are configured
 const hasPatCredentials = process.env.LINEAR_ACCESS_TOKEN;
@@ -15,11 +30,11 @@ const hasOAuthCredentials = process.env.LINEAR_CLIENT_ID &&
   (hasPatCredentials ? describe : describe.skip)('Personal Access Token Authentication', () => {
     let auth: LinearAuth;
 
-    beforeAll(() => {
+    beforeAll(async () => {
       auth = new LinearAuth();
-      auth.initialize({
+      await auth.initialize({
         type: 'pat',
-        accessToken: process.env.LINEAR_ACCESS_TOKEN!
+        token: process.env.LINEAR_ACCESS_TOKEN!
       });
     });
 
@@ -29,13 +44,14 @@ const hasOAuthCredentials = process.env.LINEAR_CLIENT_ID &&
     });
 
     it('should make authenticated requests with PAT', async () => {
-      const client = auth.getClient();
-      expect(client).toBeInstanceOf(LinearClient);
+      const client = await auth.getClient();
+      expect(client).toBeDefined();
       
       // Try to fetch viewer info to verify token works
-      const viewer = await client.viewer;
-      expect(viewer).toBeDefined();
-      expect(viewer.id).toBeDefined();
+      const viewer = await client.execute<ViewerQuery>(viewerQuery);
+      expect(viewer.data).toBeDefined();
+      expect(viewer.data?.viewer).toBeDefined();
+      expect(viewer.data?.viewer.id).toBeDefined();
     });
   });
 
@@ -43,9 +59,9 @@ const hasOAuthCredentials = process.env.LINEAR_CLIENT_ID &&
   (hasOAuthCredentials ? describe : describe.skip)('OAuth Flow', () => {
     let auth: LinearAuth;
 
-    beforeAll(() => {
+    beforeAll(async () => {
       auth = new LinearAuth();
-      auth.initialize({
+      await auth.initialize({
         type: 'oauth',
         clientId: process.env.LINEAR_CLIENT_ID!,
         clientSecret: process.env.LINEAR_CLIENT_SECRET!,
@@ -89,16 +105,17 @@ const hasOAuthCredentials = process.env.LINEAR_CLIENT_ID &&
         expiresAt: Date.now() - 1000 // Expired
       });
 
-      await auth.refreshAccessToken();
+      await auth.refreshToken();
       expect(auth.isAuthenticated()).toBe(true);
       
-      const client = auth.getClient();
-      expect(client).toBeInstanceOf(LinearClient);
+      const client = await auth.getClient();
+      expect(client).toBeDefined();
       
       // Try to fetch viewer info to verify token works
-      const viewer = await client.viewer;
-      expect(viewer).toBeDefined();
-      expect(viewer.id).toBeDefined();
+      const viewer = await client.execute<ViewerQuery>(viewerQuery);
+      expect(viewer.data).toBeDefined();
+      expect(viewer.data?.viewer).toBeDefined();
+      expect(viewer.data?.viewer.id).toBeDefined();
     });
   });
 });

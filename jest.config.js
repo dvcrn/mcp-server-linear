@@ -1,18 +1,24 @@
-/** @type {import('jest').Config} */
+const setupFile = process.env.TEST_TYPE === 'integration' 
+  ? '<rootDir>/src/__tests__/setup.integration.ts'
+  : '<rootDir>/src/__tests__/setup.ts';
+
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   transform: {
-    '^.+\\.tsx?$': [
-      'ts-jest',
-      {
-        useESM: true,
-      },
-    ],
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: 'tsconfig.json',
+      useESM: true,
+    }],
   },
-  setupFiles: ['dotenv/config'], // Load .env file before tests
+  extensionsToTreatAsEsm: ['.ts'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testMatch: [
+    '**/__tests__/**/*.test.ts',
+  ],
+  setupFilesAfterEnv: [setupFile],
 };

@@ -1,48 +1,49 @@
 import { jest } from '@jest/globals';
 import type { LinearClient } from '@linear/sdk';
-import type { LinearGraphQLClient } from '../graphql/client';
 import { config } from 'dotenv';
 
 // Load environment variables from .env file
 config();
 
-/**
- * Approaches to fix TypeScript errors with Jest mocks:
- * 
- * 1. Type Assertion for Mock Function [Failed]
- * - Define specific function signature type
- * - Use type assertion to match Jest's Mock type
- * - Error: Generic type 'Mock' requires between 0 and 1 type arguments
- * 
- * 2. Custom Mock Type [Failed]
- * - Create interface extending LinearClient
- * - Use jest.MockInstance for specific method types
- * - Error: Namespace 'jest' has no exported member 'MockInstance'
- * 
- * 3. Jest's Mocked Utility Type [Trying this approach]
- * - Use jest.Mocked to type the entire client
- * - Pick only needed properties
- * 
- * 4. Simplified Mock Structure [Not tried yet]
- * - Minimal typing in setup
- * - Handle specific types in test files
- */
-
-// Approach 3: Jest's Mocked Utility Type
-type MockedGraphQLClient = {
-  rawRequest: jest.Mock;
+export type MockGraphQLResponse<T = any> = {
+  data: T;
+  errors?: Array<{
+    message: string;
+    path?: string[];
+  }>;
 };
 
-type MockedLinearClient = {
-  client: MockedGraphQLClient;
-};
-
-// Create mock client instance
+// Create a partial mock of the Linear client
 const mockLinearClient = {
   client: {
-    rawRequest: jest.fn().mockImplementation(async () => ({ data: {} }))
-  }
-} as MockedLinearClient;
+    rawRequest: jest.fn().mockImplementation(async () => ({ data: {} })),
+    url: '',
+    options: {},
+    request: jest.fn(),
+    setHeaders: jest.fn(),
+    setHeader: jest.fn(),
+  },
+  _request: jest.fn(),
+  _requestRaw: jest.fn(),
+  _requestBatched: jest.fn(),
+  _requestBatchedRaw: jest.fn(),
+  _requestWithAuth: jest.fn(),
+  _requestWithAuthRaw: jest.fn(),
+  _requestWithAuthBatched: jest.fn(),
+  _requestWithAuthBatchedRaw: jest.fn(),
+  _requestWithoutAuth: jest.fn(),
+  _requestWithoutAuthRaw: jest.fn(),
+  _requestWithoutAuthBatched: jest.fn(),
+  _requestWithoutAuthBatchedRaw: jest.fn(),
+  _requestWithoutAuthBatchedRawWithHeaders: jest.fn(),
+  _requestWithoutAuthBatchedWithHeaders: jest.fn(),
+  _requestWithoutAuthRawWithHeaders: jest.fn(),
+  _requestWithoutAuthWithHeaders: jest.fn(),
+  _requestWithAuthBatchedRawWithHeaders: jest.fn(),
+  _requestWithAuthBatchedWithHeaders: jest.fn(),
+  _requestWithAuthRawWithHeaders: jest.fn(),
+  _requestWithAuthWithHeaders: jest.fn(),
+} as const;
 
 // Mock the Linear SDK
 jest.mock('@linear/sdk', () => ({
@@ -50,4 +51,10 @@ jest.mock('@linear/sdk', () => ({
 }));
 
 // Export mock for use in tests
-export const getMockLinearClient = () => mockLinearClient;
+export const getMockLinearClient = () => ({
+  ...mockLinearClient,
+  client: {
+    ...mockLinearClient.client,
+    rawRequest: jest.fn().mockImplementation(async () => ({ data: {} }))
+  }
+});

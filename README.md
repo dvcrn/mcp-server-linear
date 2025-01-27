@@ -1,167 +1,222 @@
-# Linear MCP Server
+# Linear MCP
 
-An MCP server for interacting with Linear's API. This server provides a set of tools for managing Linear issues, projects, and teams through Cline.
+A Model Context Protocol (MCP) implementation for the Linear API. Provides a type-safe, modular interface for interacting with Linear's GraphQL API.
 
-## Setup Guide
+## Features
 
-### 1. Environment Setup
+- 🔒 **Type-safe**: Full TypeScript support with comprehensive type definitions
+- 🏗️ **Domain-driven**: Organized around business domains (issues, projects, teams)
+- 🔄 **OAuth support**: Built-in OAuth 2.0 and PAT authentication
+- 📦 **Modular**: Clean separation of concerns with a layered architecture
+- 🛠️ **Developer-friendly**: Fluent interfaces and comprehensive documentation
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
+## Current Status
 
-### 2. Authentication
+- ✅ Authentication (PAT and OAuth)
+  - Personal Access Token (PAT) authentication
+  - OAuth 2.0 flow with token refresh
+  - Token management and validation
+- ✅ Team Operations
+  - List teams with pagination
+  - Get team by ID or key
+  - Create and update teams
+  - Team states and labels
+- ✅ Issue Operations
+  - CRUD operations
+  - Parent/child relationships
+  - Bulk operations
+  - State management
+  - Labels and assignments
+- ✅ Integration Tests
+  - Authentication flows
+  - Team operations
+  - Issue operations
+- 🚧 Project Operations (in progress)
+  - Project creation and management
+  - Team assignment
+  - Progress tracking
+- 🚧 User Operations (in progress)
+  - User management
+  - Preferences
+  - Teams and roles
 
-The server supports two authentication methods:
+## Quick Start
 
-#### Personal Access Token (Recommended)
+### Installation
 
-1. Go to Linear: Settings > API > OAuth application > "Cline MCP"
-2. Under "Developer Token", click "Create & copy token"
-3. Select "Application"
-3. Add the token to your `.env` file:
-   ```
-   LINEAR_ACCESS_TOKEN=your_personal_access_token
-   ```
+```bash
+npm install @modelcontextprotocol/linear-mcp
+```
 
-#### OAuth Flow (Alternative) ***NOT IMPLEMENTED***
+### Basic Usage
 
-1. Create an OAuth application at https://linear.app/settings/api/applications
-2. Configure OAuth environment variables in `.env`:
-   ```
-   LINEAR_CLIENT_ID=your_oauth_client_id
-   LINEAR_CLIENT_SECRET=your_oauth_client_secret
-   LINEAR_REDIRECT_URI=http://localhost:3000/callback
-   ```
+```typescript
+import { LinearMCP } from '@modelcontextprotocol/linear-mcp';
 
-### 3. Running the Server
+// Initialize with PAT
+const linear = new LinearMCP({
+  auth: {
+    type: 'pat',
+    token: 'your-pat-token'
+  }
+});
 
-1. Build the server:
-   ```bash
-   npm run build
-   ```
-2. Start the server:
-   ```bash
-   npm start
-   ```
+// Get an issue
+const issue = await linear.issues.getIssue('issue-id');
 
-### 4. Cline Integration
+// Create a project
+const project = await linear.projects.createProject({
+  name: 'New Project',
+  teamIds: ['team-id']
+});
 
-1. Open your Cline MCP settings file:
-   - macOS: `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
-   - Windows: `%APPDATA%/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
-   - Linux: `~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
+// Update a team
+const team = await linear.teams.updateTeam('team-id', {
+  name: 'Updated Team Name'
+});
+```
 
-2. Add the Linear MCP server configuration:
-   ```json
-   {
-     "mcpServers": {
-       "linear": {
-         "command": "node",
-         "args": ["/path/to/linear-mcp/build/index.js"],
-         "env": {
-           "LINEAR_ACCESS_TOKEN": "your_personal_access_token"
-         },
-         "disabled": false,
-         "autoApprove": []
-       }
-     }
-   }
-   ```
+### OAuth Authentication
 
-## Available Actions
+```typescript
+const linear = new LinearMCP({
+  auth: {
+    type: 'oauth',
+    clientId: 'your-client-id',
+    clientSecret: 'your-client-secret',
+    redirectUri: 'your-redirect-uri'
+  }
+});
 
-The server currently supports the following operations:
+// Get auth URL
+const authUrl = linear.auth.getAuthorizationUrl();
 
-### Issue Management
-- ✅ Create issues with full field support (title, description, team, project, etc.)
-- ✅ Update existing issues (priority, description, etc.)
-- ✅ Delete issues (single or bulk deletion)
-- ✅ Search issues with filtering
-- ✅ Associate issues with projects
-- ✅ Create parent/child issue relationships
+// Exchange code for tokens
+const tokens = await linear.auth.authenticate({
+  type: 'oauth',
+  code: 'auth-code'
+});
+```
 
-### Project Management
-- ✅ Create projects with associated issues
-- ✅ Get project information
-- ✅ Associate issues with projects
+## Architecture
 
-### Team Management
-- ✅ Get team information (with states and workflow details)
-- ✅ Access team states and labels
+The project follows a domain-driven, layered architecture:
 
-### Authentication
-- ✅ Personal Access Token (PAT) authentication
-- ✅ Secure token storage
+```
+src/
+├── core/               # Core types and interfaces
+├── features/          # Feature modules by domain
+├── infrastructure/    # Infrastructure concerns
+└── utils/            # Shared utilities
+```
 
-### Batch Operations
-- ✅ Bulk issue creation
-- ✅ Bulk issue deletion
+For more details, see [architecture.md](./architecture.md).
 
-### Bulk Updates (In Testing)
-- 🚧 Bulk issue updates (parallel processing implemented, needs testing)
+## Documentation
 
-## Features in Development
+- [API Reference](./docs/api.md)
+- [Authentication](./docs/auth.md)
+- [Error Handling](./docs/errors.md)
+- [Contributing](./CONTRIBUTING.md)
 
-The following features are currently being worked on:
+## Features by Domain
 
-### Issue Management
-- 🚧 Comment functionality (add/edit comments, threading)
-- 🚧 Complex search filters
-- 🚧 Pagination support for large result sets
+### Issues
 
-### Metadata Operations
-- 🚧 Label management (create/update/assign)
-- 🚧 Cycle/milestone management
+- CRUD operations
+- Relationships (parent/child)
+- Comments
+- Labels
+- State management
 
-### Project Management
-- 🚧 Project template support
-- 🚧 Advanced project operations
+### Projects
 
-### Authentication
-- 🚧 OAuth flow with automatic token refresh
+- Project management
+- Team assignment
+- Progress tracking
+- Issue organization
 
-### Performance & Security
-- 🚧 Rate limiting
-- 🚧 Detailed logging
-- 🚧 Load testing and optimization
+### Teams
+
+- Team management
+- Member management
+- Settings
+- States and labels
+
+### Users
+
+- User management
+- Preferences
+- Authentication
+- Teams and roles
+
+## Error Handling
+
+```typescript
+try {
+  const issue = await linear.issues.getIssue('invalid-id');
+} catch (error) {
+  if (error instanceof LinearError) {
+    console.error(error.message);
+    console.error(error.code);
+    console.error(error.data);
+  }
+}
+```
 
 ## Development
+
+### Setup
 
 ```bash
 # Install dependencies
 npm install
 
-# Run tests
-npm test
-
-# Run integration tests (requires LINEAR_ACCESS_TOKEN)
-npm run test:integration
-
-# Build the server
+# Build
 npm run build
 
-# Start the server
-npm start
+# Test
+npm test
+
+# Lint
+npm run lint
 ```
 
-## Integration Testing
+### Testing
 
-Integration tests verify that authentication and API calls work correctly:
+```bash
+# Run all tests
+npm test
 
-1. Set up authentication (PAT recommended for testing)
-2. Run integration tests:
-   ```bash
-   npm run test:integration
-   ```
+# Run specific tests
+npm test -- --grep "issue"
 
-For OAuth testing:
-1. Configure OAuth credentials in `.env`
-2. Remove `.skip` from OAuth tests in `src/__tests__/auth.integration.test.ts`
-3. Run integration tests
+# Run with coverage
+npm run test:coverage
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of conduct and development process.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Linear API Team
+- Model Context Protocol Team
+- All contributors
+
+## Support
+
+- [GitHub Issues](https://github.com/your-org/linear-mcp/issues)
+- [Documentation](./docs)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/linear-mcp)
