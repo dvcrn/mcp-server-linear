@@ -1,4 +1,26 @@
-import { gql } from 'graphql-tag';
+import { gql } from "graphql-tag";
+
+export const CREATE_ISSUE_MUTATION = gql`
+  mutation CreateIssue($input: IssueCreateInput!) {
+    issueCreate(input: $input) {
+      success
+      issue {
+        id
+        identifier
+        title
+        url
+        team {
+          id
+          name
+        }
+        project {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 export const CREATE_ISSUES_MUTATION = gql`
   mutation CreateIssues($input: [IssueCreateInput!]!) {
@@ -51,11 +73,11 @@ export const CREATE_BATCH_ISSUES = gql`
   }
 `;
 
-export const UPDATE_ISSUES_MUTATION = gql`
-  mutation UpdateIssues($ids: [String!]!, $input: IssueUpdateInput!) {
-    issueUpdate(ids: $ids, input: $input) {
+export const UPDATE_ISSUE_MUTATION = gql`
+  mutation UpdateIssue($id: String!, $input: IssueUpdateInput!) {
+    issueUpdate(id: $id, input: $input) {
       success
-      issues {
+      issue {
         id
         identifier
         title

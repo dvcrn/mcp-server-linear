@@ -6,7 +6,7 @@ import {
   CreateIssueResponse,
   CreateIssuesResponse,
   UpdateIssueInput,
-  UpdateIssuesResponse,
+  UpdateIssueResponse,
   SearchIssuesInput,
   SearchIssuesResponse,
   DeleteIssueResponse
@@ -430,7 +430,7 @@ describe('LinearGraphQLClient', () => {
 
       const ids = ['issue-1', 'issue-2'];
       const updateInput: UpdateIssueInput = { stateId: 'state-2' };
-      const result: UpdateIssuesResponse = await graphqlClient.updateIssues(ids, updateInput);
+      const result: UpdateIssueResponse = await graphqlClient.updateIssues(ids, updateInput);
 
       expect(result).toEqual(mockResponse.data);
       // Verify single mutation call

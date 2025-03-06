@@ -12,7 +12,7 @@ import {
   DeleteIssuesInput,
   CreateIssueResponse,
   CreateIssuesResponse,
-  UpdateIssuesResponse,
+  UpdateIssueResponse,
   SearchIssuesResponse,
   DeleteIssueResponse,
   Issue
@@ -98,13 +98,14 @@ export class IssueHandler extends BaseHandler implements IssueHandlerMethods {
         throw new Error('IssueIds parameter must be an array');
       }
 
-      const result = await client.updateIssues(args.issueIds, args.update) as UpdateIssuesResponse;
+      const result = await client.updateIssues(args.issueIds, args.update) as UpdateIssueResponse;
 
       if (!result.issueUpdate.success) {
         throw new Error('Failed to update issues');
       }
 
-      const updatedCount = result.issueUpdate.issues.length;
+      // Since the response only contains a single issue, we count the number of IDs that were updated
+      const updatedCount = args.issueIds.length;
 
       return this.createResponse(`Successfully updated ${updatedCount} issues`);
     } catch (error) {
