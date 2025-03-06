@@ -150,6 +150,19 @@ export class LinearGraphQLClient {
     after?: string,
     orderBy: string = "updatedAt"
   ): Promise<SearchIssuesResponse> {
+    // Use GET_ISSUES_BY_IDENTIFIER for identifier searches
+    if (filter?.identifier?.in) {
+      const { GET_ISSUES_BY_IDENTIFIER } = await import("./queries.js");
+      // Extract numbers from identifiers (e.g., "78" from "MIC-78") and convert to Float
+      const numbers = filter.identifier.in.map((id) =>
+        parseFloat(id.split("-")[1])
+      );
+      return this.execute<SearchIssuesResponse>(GET_ISSUES_BY_IDENTIFIER, {
+        numbers,
+      });
+    }
+
+    // Use regular search query for other filters
     const { SEARCH_ISSUES_QUERY } = await import("./queries.js");
     return this.execute<SearchIssuesResponse>(SEARCH_ISSUES_QUERY, {
       filter,

@@ -39,6 +39,9 @@ export interface SearchIssuesInput {
         eq?: string;
       };
     };
+    identifier?: {
+      in: string[];
+    };
   };
   teamIds?: string[];
   assigneeIds?: string[];
@@ -47,6 +50,10 @@ export interface SearchIssuesInput {
   first?: number;
   after?: string;
   orderBy?: string;
+}
+
+export interface SearchIssuesByIdentifierInput {
+  identifiers: string[];
 }
 
 export interface DeleteIssueInput {
@@ -66,9 +73,30 @@ export interface Issue {
   identifier: string;
   title: string;
   url: string;
+  state: {
+    id: string;
+    name: string;
+    type: string;
+    color: string;
+  };
+  assignee?: {
+    id: string;
+    name: string;
+    email: string;
+  };
   project?: {
     name: string;
   };
+  priority?: number;
+  labels?: {
+    nodes: {
+      id: string;
+      name: string;
+      color: string;
+    }[];
+  };
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface CreateIssueResponse {
@@ -127,6 +155,9 @@ export interface IssueHandlerMethods {
     args: BulkUpdateIssuesInput
   ): Promise<BaseToolResponse>;
   handleSearchIssues(args: SearchIssuesInput): Promise<BaseToolResponse>;
+  handleSearchIssuesByIdentifier(
+    args: SearchIssuesByIdentifierInput
+  ): Promise<BaseToolResponse>;
   handleDeleteIssue(args: DeleteIssueInput): Promise<BaseToolResponse>;
   handleDeleteIssues(args: DeleteIssuesInput): Promise<BaseToolResponse>;
 }

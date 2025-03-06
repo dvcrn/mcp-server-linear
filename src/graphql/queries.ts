@@ -1,4 +1,4 @@
-import { gql } from 'graphql-tag';
+import { gql } from "graphql-tag";
 
 export const SEARCH_ISSUES_QUERY = gql`
   query SearchIssues(
@@ -7,11 +7,58 @@ export const SEARCH_ISSUES_QUERY = gql`
     $after: String
     $orderBy: PaginationOrderBy
   ) {
+    issues(filter: $filter, first: $first, after: $after, orderBy: $orderBy) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        id
+        identifier
+        title
+        description
+        url
+        state {
+          id
+          name
+          type
+          color
+        }
+        assignee {
+          id
+          name
+          email
+        }
+        team {
+          id
+          name
+          key
+        }
+        project {
+          id
+          name
+        }
+        priority
+        labels {
+          nodes {
+            id
+            name
+            color
+          }
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const GET_ISSUES_BY_IDENTIFIER = gql`
+  query GetIssuesByIdentifier($numbers: [Float!]!) {
     issues(
-      filter: $filter
-      first: $first
-      after: $after
-      orderBy: $orderBy
+      filter: { number: { in: $numbers } }
+      first: 100
+      orderBy: updatedAt
     ) {
       pageInfo {
         hasNextPage
@@ -38,11 +85,11 @@ export const SEARCH_ISSUES_QUERY = gql`
           id
           name
           key
-        },
+        }
         project {
           id
           name
-        },
+        }
         priority
         labels {
           nodes {
