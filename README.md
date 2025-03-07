@@ -97,6 +97,58 @@ The following features are currently being worked on:
 - 🚧 Detailed logging
 - 🚧 Load testing and optimization
 
+## Using Multiple Linear Workspaces
+
+You can connect to multiple Linear workspaces by adding the Linear MCP server multiple times with different `TOOL_PREFIX` values. This allows you to work with separate Linear workspaces within the same Cline environment.
+
+### Configuration Example
+
+```json
+{
+  "mcpServers": {
+    "company1-linear": {
+      "command": "npx",
+      "args": ["linear-mcp"],
+      "env": {
+        "LINEAR_ACCESS_TOKEN": "your_company1_linear_token_here",
+        "TOOL_PREFIX": "company1"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "company2-linear": {
+      "command": "npx",
+      "args": ["linear-mcp"],
+      "env": {
+        "LINEAR_ACCESS_TOKEN": "your_company2_linear_token_here",
+        "TOOL_PREFIX": "company2"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "company3-linear": {
+      "command": "npx",
+      "args": ["linear-mcp"],
+      "env": {
+        "LINEAR_ACCESS_TOKEN": "your_company3_linear_token_here",
+        "TOOL_PREFIX": "company3"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+```
+
+### How It Works
+
+When you set a `TOOL_PREFIX` value:
+
+1. All tool names are prefixed with it (e.g., `company1_linear_create_issue`)
+2. Tool descriptions include the prefix (e.g., "For 'company1' Linear workspace: Create a new issue")
+
+This makes it clear which workspace each tool is operating on and prevents conflicts between different Linear instances.
+
 ## Contributing
 
 If you want to contribute to the development of this MCP server, follow these steps:
