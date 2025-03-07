@@ -3,10 +3,21 @@
  * These schemas define the input parameters and validation rules for each tool.
  */
 
+const getToolName = (baseName: string): string => {
+  const prefix = process.env.TOOL_PREFIX;
+  return prefix ? `${prefix}_${baseName}` : baseName;
+};
+
+const getToolDescription = (description: string): string => {
+  const prefix = process.env.TOOL_PREFIX;
+  return prefix ? `For '${prefix}' Linear workspace: ${description}` : description;
+};
+
 export const toolSchemas = {
-  linear_auth: {
-    name: "linear_auth",
-    description: "Initialize OAuth flow with Linear",
+  // Linear Authentication Tools
+  [getToolName('linear_auth')]: {
+    name: getToolName('linear_auth'),
+    description: getToolDescription("Initialize OAuth flow with Linear"),
     inputSchema: {
       type: "object",
       properties: {
@@ -27,9 +38,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_auth_callback: {
-    name: "linear_auth_callback",
-    description: "Handle OAuth callback",
+  [getToolName('linear_auth_callback')]: {
+    name: getToolName('linear_auth_callback'),
+    description: getToolDescription("Handle OAuth callback"),
     inputSchema: {
       type: "object",
       properties: {
@@ -42,9 +53,11 @@ export const toolSchemas = {
     },
   },
 
-  linear_create_issue: {
-    name: "linear_create_issue",
-    description: "Create a new issue in Linear",
+
+  // Linear Issue Management Tools
+  [getToolName('linear_create_issue')]: {
+    name: getToolName('linear_create_issue'),
+    description: getToolDescription("Create a new issue in Linear"),
     inputSchema: {
       type: "object",
       properties: {
@@ -85,10 +98,11 @@ export const toolSchemas = {
     },
   },
 
-  linear_create_project_with_issues: {
-    name: "linear_create_project_with_issues",
-    description:
-      "Create a new project with associated issues. Note: Project requires teamIds (array) not teamId (single value).",
+
+  // Linear Project Management Tools
+  [getToolName('linear_create_project_with_issues')]: {
+    name: getToolName('linear_create_project_with_issues'),
+    description: getToolDescription("Create a new project with associated issues. Note: Project requires teamIds (array) not teamId (single value)."),
     inputSchema: {
       type: "object",
       properties: {
@@ -147,13 +161,13 @@ export const toolSchemas = {
           project: {
             name: "Q1 Planning",
             description: "Q1 2025 Planning Project",
-            teamIds: ["team-id-1"],
+            teamIds: ["eng-team-id"],
           },
           issues: [
             {
               title: "Project Setup",
               description: "Initial project setup tasks",
-              teamId: "team-id-1",
+              teamId: "eng-team-id",
             },
           ],
         },
@@ -164,18 +178,18 @@ export const toolSchemas = {
           project: {
             name: "Cross-team Initiative",
             description: "Project spanning multiple teams",
-            teamIds: ["team-id-1", "team-id-2"],
+            teamIds: ["eng-team-id", "design-team-id"],
           },
           issues: [
             {
-              title: "Team 1 Tasks",
-              description: "Tasks for team 1",
-              teamId: "team-id-1",
+              title: "Engineering Tasks",
+              description: "Tasks for engineering team",
+              teamId: "eng-team-id",
             },
             {
-              title: "Team 2 Tasks",
-              description: "Tasks for team 2",
-              teamId: "team-id-2",
+              title: "Design Tasks",
+              description: "Tasks for design team",
+              teamId: "design-team-id",
             },
           ],
         },
@@ -183,9 +197,9 @@ export const toolSchemas = {
     ],
   },
 
-  linear_bulk_update_issues: {
-    name: "linear_bulk_update_issues",
-    description: "Update multiple issues at once",
+  [getToolName('linear_bulk_update_issues')]: {
+    name: getToolName('linear_bulk_update_issues'),
+    description: getToolDescription("Update multiple issues at once"),
     inputSchema: {
       type: "object",
       properties: {
@@ -221,9 +235,11 @@ export const toolSchemas = {
     },
   },
 
-  linear_search_issues: {
-    name: "linear_search_issues",
-    description: "Search for issues with filtering and pagination",
+
+  // Linear Search Tools
+  [getToolName('linear_search_issues')]: {
+    name: getToolName('linear_search_issues'),
+    description: getToolDescription("Search for issues with filtering and pagination"),
     inputSchema: {
       type: "object",
       properties: {
@@ -280,10 +296,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_search_issues_by_identifier: {
-    name: "linear_search_issues_by_identifier",
-    description:
-      'Search for issues by their identifiers (e.g., ["MIC-78", "MIC-79"])',
+  [getToolName('linear_search_issues_by_identifier')]: {
+    name: getToolName('linear_search_issues_by_identifier'),
+    description: getToolDescription('Search for issues by their identifiers (e.g., ["ENG-78", "ENG-79"])'),
     inputSchema: {
       type: "object",
       properties: {
@@ -299,27 +314,29 @@ export const toolSchemas = {
     },
   },
 
-  linear_get_teams: {
-    name: "linear_get_teams",
-    description: "Get all teams with their states and labels",
+
+  // Linear Team Management Tools
+  [getToolName('linear_get_teams')]: {
+    name: getToolName('linear_get_teams'),
+    description: getToolDescription("Get all teams with their states and labels"),
     inputSchema: {
       type: "object",
       properties: {},
     },
   },
 
-  linear_get_user: {
-    name: "linear_get_user",
-    description: "Get current user information",
+  [getToolName('linear_get_user')]: {
+    name: getToolName('linear_get_user'),
+    description: getToolDescription("Get current user information"),
     inputSchema: {
       type: "object",
       properties: {},
     },
   },
 
-  linear_delete_issue: {
-    name: "linear_delete_issue",
-    description: "Delete an issue",
+  [getToolName('linear_delete_issue')]: {
+    name: getToolName('linear_delete_issue'),
+    description: getToolDescription("Delete an issue"),
     inputSchema: {
       type: "object",
       properties: {
@@ -332,9 +349,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_delete_issues: {
-    name: "linear_delete_issues",
-    description: "Delete multiple issues",
+  [getToolName('linear_delete_issues')]: {
+    name: getToolName('linear_delete_issues'),
+    description: getToolDescription("Delete multiple issues"),
     inputSchema: {
       type: "object",
       properties: {
@@ -350,9 +367,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_get_project: {
-    name: "linear_get_project",
-    description: "Get project information",
+  [getToolName('linear_get_project')]: {
+    name: getToolName('linear_get_project'),
+    description: getToolDescription("Get project information"),
     inputSchema: {
       type: "object",
       properties: {
@@ -365,9 +382,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_search_projects: {
-    name: "linear_search_projects",
-    description: "Search for projects by name",
+  [getToolName('linear_search_projects')]: {
+    name: getToolName('linear_search_projects'),
+    description: getToolDescription("Search for projects by name"),
     inputSchema: {
       type: "object",
       properties: {
@@ -380,9 +397,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_create_issues: {
-    name: "linear_create_issues",
-    description: "Create multiple issues at once",
+  [getToolName('linear_create_issues')]: {
+    name: getToolName('linear_create_issues'),
+    description: getToolDescription("Create multiple issues at once"),
     inputSchema: {
       type: "object",
       properties: {
@@ -426,10 +443,10 @@ export const toolSchemas = {
     },
   },
 
-  // Comment tools
-  linear_create_comment: {
-    name: "linear_create_comment",
-    description: "Creates a new comment on an issue",
+  // Linear Comment Management Tools
+  [getToolName('linear_create_comment')]: {
+    name: getToolName('linear_create_comment'),
+    description: getToolDescription("Creates a new comment on an issue"),
     inputSchema: {
       type: "object",
       properties: {
@@ -446,9 +463,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_update_comment: {
-    name: "linear_update_comment",
-    description: "Updates an existing comment",
+  [getToolName('linear_update_comment')]: {
+    name: getToolName('linear_update_comment'),
+    description: getToolDescription("Updates an existing comment"),
     inputSchema: {
       type: "object",
       properties: {
@@ -471,9 +488,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_delete_comment: {
-    name: "linear_delete_comment",
-    description: "Deletes a comment",
+  [getToolName('linear_delete_comment')]: {
+    name: getToolName('linear_delete_comment'),
+    description: getToolDescription("Deletes a comment"),
     inputSchema: {
       type: "object",
       properties: {
@@ -486,9 +503,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_resolve_comment: {
-    name: "linear_resolve_comment",
-    description: "Resolves a comment",
+  [getToolName('linear_resolve_comment')]: {
+    name: getToolName('linear_resolve_comment'),
+    description: getToolDescription("Resolves a comment"),
     inputSchema: {
       type: "object",
       properties: {
@@ -506,9 +523,9 @@ export const toolSchemas = {
     },
   },
 
-  linear_unresolve_comment: {
-    name: "linear_unresolve_comment",
-    description: "Unresolves a comment",
+  [getToolName('linear_unresolve_comment')]: {
+    name: getToolName('linear_unresolve_comment'),
+    description: getToolDescription("Unresolves a comment"),
     inputSchema: {
       type: "object",
       properties: {
@@ -521,9 +538,11 @@ export const toolSchemas = {
     },
   },
 
-  linear_create_customer_need_from_attachment: {
-    name: "linear_create_customer_need_from_attachment",
-    description: "Creates a new customer need from an attachment",
+
+  // Linear Customer Need Tools
+  [getToolName('linear_create_customer_need_from_attachment')]: {
+    name: getToolName('linear_create_customer_need_from_attachment'),
+    description: getToolDescription("Creates a new customer need from an attachment"),
     inputSchema: {
       type: "object",
       properties: {
