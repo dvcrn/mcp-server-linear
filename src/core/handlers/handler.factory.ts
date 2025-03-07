@@ -5,6 +5,7 @@ import { IssueHandler } from "../../features/issues/handlers/issue.handler.js";
 import { ProjectHandler } from "../../features/projects/handlers/project.handler.js";
 import { TeamHandler } from "../../features/teams/handlers/team.handler.js";
 import { UserHandler } from "../../features/users/handlers/user.handler.js";
+import { CommentHandler } from "../../features/comments/handlers/comment.handler.js";
 
 /**
  * Factory for creating and managing feature-specific handlers.
@@ -16,6 +17,7 @@ export class HandlerFactory {
   private projectHandler: ProjectHandler;
   private teamHandler: TeamHandler;
   private userHandler: UserHandler;
+  private commentHandler: CommentHandler;
 
   constructor(auth: LinearAuth, graphqlClient?: LinearGraphQLClient) {
     // Initialize all handlers with shared dependencies
@@ -24,6 +26,7 @@ export class HandlerFactory {
     this.projectHandler = new ProjectHandler(auth, graphqlClient);
     this.teamHandler = new TeamHandler(auth, graphqlClient);
     this.userHandler = new UserHandler(auth, graphqlClient);
+    this.commentHandler = new CommentHandler(auth, graphqlClient);
   }
 
   /**
@@ -35,7 +38,8 @@ export class HandlerFactory {
       | IssueHandler
       | ProjectHandler
       | TeamHandler
-      | UserHandler;
+      | UserHandler
+      | CommentHandler;
     method: string;
   } {
     // Map tool names to their handlers and methods
@@ -96,6 +100,32 @@ export class HandlerFactory {
 
       // User tools
       linear_get_user: { handler: this.userHandler, method: "handleGetUser" },
+
+      // Comment tools
+      linear_create_comment: {
+        handler: this.commentHandler,
+        method: "handleCommentCreate",
+      },
+      linear_update_comment: {
+        handler: this.commentHandler,
+        method: "handleCommentUpdate",
+      },
+      linear_delete_comment: {
+        handler: this.commentHandler,
+        method: "handleCommentDelete",
+      },
+      linear_resolve_comment: {
+        handler: this.commentHandler,
+        method: "handleCommentResolve",
+      },
+      linear_unresolve_comment: {
+        handler: this.commentHandler,
+        method: "handleCommentUnresolve",
+      },
+      linear_create_customer_need_from_attachment: {
+        handler: this.commentHandler,
+        method: "handleCustomerNeedCreateFromAttachment",
+      },
     };
 
     const handlerInfo = handlerMap[toolName];

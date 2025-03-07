@@ -26,6 +26,14 @@ export interface ToolHandler {
 
   // User Operations
   handleGetUser(args: any): Promise<BaseToolResponse>;
+
+  // Comment Operations
+  handleCommentCreate(args: any): Promise<BaseToolResponse>;
+  handleCommentUpdate(args: any): Promise<BaseToolResponse>;
+  handleCommentDelete(args: any): Promise<BaseToolResponse>;
+  handleCommentResolve(args: any): Promise<BaseToolResponse>;
+  handleCommentUnresolve(args: any): Promise<BaseToolResponse>;
+  handleCustomerNeedCreateFromAttachment(args: any): Promise<BaseToolResponse>;
 }
 
 /**

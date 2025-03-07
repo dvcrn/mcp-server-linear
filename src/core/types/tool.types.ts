@@ -425,4 +425,129 @@ export const toolSchemas = {
       required: ["issues"],
     },
   },
+
+  // Comment tools
+  linear_create_comment: {
+    name: "linear_create_comment",
+    description: "Creates a new comment on an issue",
+    inputSchema: {
+      type: "object",
+      properties: {
+        body: {
+          type: "string",
+          description: "Comment text content",
+        },
+        issueId: {
+          type: "string",
+          description: "ID of the issue to comment on",
+        },
+      },
+      required: ["body", "issueId"],
+    },
+  },
+
+  linear_update_comment: {
+    name: "linear_update_comment",
+    description: "Updates an existing comment",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "Comment ID",
+        },
+        input: {
+          type: "object",
+          properties: {
+            body: {
+              type: "string",
+              description: "Updated comment text",
+            },
+          },
+          required: ["body"],
+        },
+      },
+      required: ["id", "input"],
+    },
+  },
+
+  linear_delete_comment: {
+    name: "linear_delete_comment",
+    description: "Deletes a comment",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "Comment ID to delete",
+        },
+      },
+      required: ["id"],
+    },
+  },
+
+  linear_resolve_comment: {
+    name: "linear_resolve_comment",
+    description: "Resolves a comment",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "Comment ID to resolve",
+        },
+        resolvingCommentId: {
+          type: "string",
+          description: "Optional ID of a resolving comment",
+          optional: true,
+        },
+      },
+      required: ["id"],
+    },
+  },
+
+  linear_unresolve_comment: {
+    name: "linear_unresolve_comment",
+    description: "Unresolves a comment",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "Comment ID to unresolve",
+        },
+      },
+      required: ["id"],
+    },
+  },
+
+  linear_create_customer_need_from_attachment: {
+    name: "linear_create_customer_need_from_attachment",
+    description: "Creates a new customer need from an attachment",
+    inputSchema: {
+      type: "object",
+      properties: {
+        attachmentId: {
+          type: "string",
+          description: "ID of the attachment",
+        },
+        title: {
+          type: "string",
+          description: "Title for the customer need",
+          optional: true,
+        },
+        description: {
+          type: "string",
+          description: "Description for the customer need",
+          optional: true,
+        },
+        teamId: {
+          type: "string",
+          description: "Team ID for the customer need",
+          optional: true,
+        },
+      },
+      required: ["attachmentId"],
+    },
+  },
 };
