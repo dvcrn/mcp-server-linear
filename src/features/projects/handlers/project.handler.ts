@@ -1,7 +1,7 @@
-import { BaseHandler } from '../../../core/handlers/base.handler.js';
-import { BaseToolResponse } from '../../../core/interfaces/tool-handler.interface.js';
-import { LinearAuth } from '../../../auth.js';
-import { LinearGraphQLClient } from '../../../graphql/client.js';
+import { BaseHandler } from "../../../core/handlers/base.handler.js";
+import { BaseToolResponse } from "../../../core/interfaces/tool-handler.interface.js";
+import { LinearAuth } from "../../../auth.js";
+import { LinearGraphQLClient } from "../../../graphql/client.js";
 
 /**
  * Handler for project-related operations.
@@ -36,27 +36,31 @@ export class ProjectHandler extends BaseHandler {
   async handleCreateProjectWithIssues(args: any): Promise<BaseToolResponse> {
     try {
       const client = this.verifyAuth();
-      this.validateRequiredParams(args, ['project', 'issues']);
+      this.validateRequiredParams(args, ["project", "issues"]);
 
       // Validate project input
-      if (!args.project.teamIds || !Array.isArray(args.project.teamIds) || args.project.teamIds.length === 0) {
+      if (
+        !args.project.teamIds ||
+        !Array.isArray(args.project.teamIds) ||
+        args.project.teamIds.length === 0
+      ) {
         throw new Error(
-          'Project requires teamIds as an array with at least one team ID.\n' +
-          'Example:\n' +
-          '{\n' +
-          '  project: {\n' +
-          '    name: "Project Name",\n' +
-          '    teamIds: ["team-id-1"]\n' +
-          '  },\n' +
-          '  issues: [{ title: "Issue Title", teamId: "team-id-1" }]\n' +
-          '}'
+          "Project requires teamIds as an array with at least one team ID.\n" +
+            "Example:\n" +
+            "{\n" +
+            "  project: {\n" +
+            '    name: "Project Name",\n' +
+            '    teamIds: ["team-id-1"]\n' +
+            "  },\n" +
+            '  issues: [{ title: "Issue Title", teamId: "team-id-1" }]\n' +
+            "}"
         );
       }
 
       if (!Array.isArray(args.issues)) {
         throw new Error(
-          'Issues parameter must be an array of issue objects.\n' +
-          'Example: issues: [{ title: "Issue Title", teamId: "team-id-1" }]'
+          "Issues parameter must be an array of issue objects.\n" +
+            'Example: issues: [{ title: "Issue Title", teamId: "team-id-1" }]'
         );
       }
 
@@ -65,7 +69,7 @@ export class ProjectHandler extends BaseHandler {
         if (!issue.teamId) {
           throw new Error(
             `Issue at index ${index} is missing required teamId.\n` +
-            'Each issue must have a teamId that matches one of the project teamIds.'
+              "Each issue must have a teamId that matches one of the project teamIds."
           );
         }
       });
@@ -75,8 +79,11 @@ export class ProjectHandler extends BaseHandler {
         args.issues
       );
 
-      if (!result.projectCreate.success || (result.issueBatchCreate && !result.issueBatchCreate.success)) {
-        throw new Error('Failed to create project or issues');
+      if (
+        !result.projectCreate.success ||
+        (result.issueBatchCreate && !result.issueBatchCreate.success)
+      ) {
+        throw new Error("Failed to create project or issues");
       }
 
       const { project } = result.projectCreate;
@@ -85,20 +92,20 @@ export class ProjectHandler extends BaseHandler {
       const response = [
         `Successfully created project with issues`,
         `Project: ${project.name}`,
-        `Project URL: ${project.url}`
+        `Project URL: ${project.url}`,
       ];
 
       if (issuesCreated > 0) {
         response.push(`Issues created: ${issuesCreated}`);
         // Add details for each issue
-        result.issueBatchCreate?.issues.forEach(issue => {
+        result.issueBatchCreate?.issues.forEach((issue) => {
           response.push(`- ${issue.identifier}: ${issue.title} (${issue.url})`);
         });
       }
 
-      return this.createResponse(response.join('\n'));
+      return this.createResponse(response.join("\n"));
     } catch (error) {
-      this.handleError(error, 'create project with issues');
+      this.handleError(error, "create project with issues");
     }
   }
 
@@ -108,31 +115,26 @@ export class ProjectHandler extends BaseHandler {
   async handleGetProject(args: any): Promise<BaseToolResponse> {
     try {
       const client = this.verifyAuth();
-      this.validateRequiredParams(args, ['id']);
+      this.validateRequiredParams(args, ["id"]);
 
       const result = await client.getProject(args.id);
 
       return this.createJsonResponse(result);
     } catch (error) {
-      this.handleError(error, 'get project info');
+      this.handleError(error, "get project info");
     }
   }
 
   /**
-   * Searches for projects by name.
+   * Lists all projects or searches with optional filters.
    */
-  async handleSearchProjects(args: any): Promise<BaseToolResponse> {
+  async handleListProjects(args: any = {}): Promise<BaseToolResponse> {
     try {
       const client = this.verifyAuth();
-      this.validateRequiredParams(args, ['name']);
-
-      const result = await client.searchProjects({
-        name: { eq: args.name }
-      });
-
+      const result = await client.searchProjects(args.filter);
       return this.createJsonResponse(result);
     } catch (error) {
-      this.handleError(error, 'search projects');
+      this.handleError(error, "list projects");
     }
   }
 }

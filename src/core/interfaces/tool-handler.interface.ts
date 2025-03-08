@@ -19,7 +19,7 @@ export interface ToolHandler {
   // Project Operations
   handleCreateProjectWithIssues(args: any): Promise<BaseToolResponse>;
   handleGetProject(args: any): Promise<BaseToolResponse>;
-  handleSearchProjects(args: any): Promise<BaseToolResponse>;
+  handleListProjects(args: any): Promise<BaseToolResponse>;
 
   // Team Operations
   handleGetTeams(args: any): Promise<BaseToolResponse>;

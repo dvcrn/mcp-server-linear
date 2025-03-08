@@ -388,18 +388,55 @@ export const toolSchemas = {
     },
   },
 
-  [getToolName("linear_search_projects")]: {
-    name: getToolName("linear_search_projects"),
-    description: getToolDescription("Search for projects by name"),
+  [getToolName("linear_list_projects")]: {
+    name: getToolName("linear_list_projects"),
+    description: getToolDescription(
+      "List all projects or filter them by criteria"
+    ),
     inputSchema: {
       type: "object",
       properties: {
-        name: {
-          type: "string",
-          description: "Project name to search for (exact match)",
+        filter: {
+          type: "object",
+          properties: {
+            status: {
+              type: "object",
+              properties: {
+                eq: { type: "string", description: "Equal to" },
+                in: {
+                  type: "array",
+                  items: { type: "string" },
+                  description: "In array of values",
+                },
+                neq: { type: "string", description: "Not equal to" },
+                nin: {
+                  type: "array",
+                  items: { type: "string" },
+                  description: "Not in array of values",
+                },
+              },
+              description: "Filter by project status",
+            },
+            projectMilestones: {
+              type: "object",
+              description: "Filter by project milestones",
+            },
+            projectUpdates: {
+              type: "object",
+              description: "Filter by project updates",
+            },
+            nextProjectMilestone: {
+              type: "object",
+              description: "Filter by next project milestone",
+            },
+            completedProjectMilestones: {
+              type: "object",
+              description: "Filter by completed project milestones",
+            },
+          },
+          description: "Optional filter criteria for projects",
         },
       },
-      required: ["name"],
     },
   },
 

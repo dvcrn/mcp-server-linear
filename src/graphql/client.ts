@@ -16,6 +16,7 @@ import {
   ProjectInput,
   ProjectResponse,
   SearchProjectsResponse,
+  ProjectFilter,
 } from "../features/projects/types/project.types.js";
 import {
   TeamResponse,
@@ -191,9 +192,9 @@ export class LinearGraphQLClient {
   }
 
   // Search projects
-  async searchProjects(filter: {
-    name?: { eq: string };
-  }): Promise<SearchProjectsResponse> {
+  async searchProjects(
+    filter?: ProjectFilter
+  ): Promise<SearchProjectsResponse> {
     const { SEARCH_PROJECTS_QUERY } = await import("./queries.js");
     return this.execute<SearchProjectsResponse>(SEARCH_PROJECTS_QUERY, {
       filter,

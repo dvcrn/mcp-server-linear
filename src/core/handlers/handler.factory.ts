@@ -48,117 +48,160 @@ export class HandlerFactory {
     method: string;
   } {
     // Map tool names to their handlers and methods
-    const handlerMap: Record<string, { handler: any; method: string; description?: string }> = {
+    const handlerMap: Record<
+      string,
+      { handler: any; method: string; description?: string }
+    > = {
       // Auth tools
-      [getToolName('linear_auth')]: { 
-        handler: this.authHandler, 
+      [getToolName("linear_auth")]: {
+        handler: this.authHandler,
         method: "handleAuth",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_auth_callback')]: {
+      [getToolName("linear_auth_callback")]: {
         handler: this.authHandler,
         method: "handleAuthCallback",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
 
       // Issue tools
-      [getToolName('linear_create_issue')]: {
+      [getToolName("linear_create_issue")]: {
         handler: this.issueHandler,
         method: "handleCreateIssue",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_create_issues')]: {
+      [getToolName("linear_create_issues")]: {
         handler: this.issueHandler,
         method: "handleCreateIssues",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_bulk_update_issues')]: {
+      [getToolName("linear_bulk_update_issues")]: {
         handler: this.issueHandler,
         method: "handleBulkUpdateIssues",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_search_issues')]: {
+      [getToolName("linear_search_issues")]: {
         handler: this.issueHandler,
         method: "handleSearchIssues",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_search_issues_by_identifier')]: {
+      [getToolName("linear_search_issues_by_identifier")]: {
         handler: this.issueHandler,
         method: "handleSearchIssuesByIdentifier",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_delete_issue')]: {
+      [getToolName("linear_delete_issue")]: {
         handler: this.issueHandler,
         method: "handleDeleteIssue",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_delete_issues')]: {
+      [getToolName("linear_delete_issues")]: {
         handler: this.issueHandler,
         method: "handleDeleteIssues",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
 
       // Project tools
-      [getToolName('linear_create_project_with_issues')]: {
+      [getToolName("linear_create_project_with_issues")]: {
         handler: this.projectHandler,
         method: "handleCreateProjectWithIssues",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_get_project')]: {
+      [getToolName("linear_get_project")]: {
         handler: this.projectHandler,
         method: "handleGetProject",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_search_projects')]: {
+      [getToolName("linear_list_projects")]: {
         handler: this.projectHandler,
-        method: "handleSearchProjects",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        method: "handleListProjects",
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
 
       // Team tools
-      [getToolName('linear_get_teams')]: { 
-        handler: this.teamHandler, 
+      [getToolName("linear_get_teams")]: {
+        handler: this.teamHandler,
         method: "handleGetTeams",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
 
       // User tools
-      [getToolName('linear_get_user')]: { 
-        handler: this.userHandler, 
+      [getToolName("linear_get_user")]: {
+        handler: this.userHandler,
         method: "handleGetUser",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
 
       // Comment tools
-      [getToolName('linear_create_comment')]: {
+      [getToolName("linear_create_comment")]: {
         handler: this.commentHandler,
         method: "handleCommentCreate",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_update_comment')]: {
+      [getToolName("linear_update_comment")]: {
         handler: this.commentHandler,
         method: "handleCommentUpdate",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_delete_comment')]: {
+      [getToolName("linear_delete_comment")]: {
         handler: this.commentHandler,
         method: "handleCommentDelete",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_resolve_comment')]: {
+      [getToolName("linear_resolve_comment")]: {
         handler: this.commentHandler,
         method: "handleCommentResolve",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_unresolve_comment')]: {
+      [getToolName("linear_unresolve_comment")]: {
         handler: this.commentHandler,
         method: "handleCommentUnresolve",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
-      [getToolName('linear_create_customer_need_from_attachment')]: {
+      [getToolName("linear_create_customer_need_from_attachment")]: {
         handler: this.commentHandler,
         method: "handleCustomerNeedCreateFromAttachment",
-        description: process.env.TOOL_PREFIX ? `Tool for ${process.env.TOOL_PREFIX} Linear account` : undefined
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
       },
     };
 

@@ -158,6 +158,7 @@ export const SEARCH_PROJECTS_QUERY = gql`
         name
         description
         url
+        state
         teams {
           nodes {
             id

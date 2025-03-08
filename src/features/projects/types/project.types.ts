@@ -55,8 +55,77 @@ export interface ProjectResponse {
   };
 }
 
+/**
+ * Filter for project milestone collections
+ */
+export interface ProjectMilestoneCollectionFilter {
+  every?: ProjectMilestoneFilter;
+  some?: ProjectMilestoneFilter;
+  none?: ProjectMilestoneFilter;
+}
+
+/**
+ * Filter for project milestone
+ */
+export interface ProjectMilestoneFilter {
+  id?: string;
+  // Add other milestone fields as needed
+}
+
+/**
+ * Filter for project updates collection
+ */
+export interface ProjectUpdatesCollectionFilter {
+  every?: ProjectUpdateFilter;
+  some?: ProjectUpdateFilter;
+  none?: ProjectUpdateFilter;
+}
+
+/**
+ * Filter for project update
+ */
+export interface ProjectUpdateFilter {
+  id?: string;
+  // Add other update fields as needed
+}
+
+/**
+ * Filter for project status
+ */
+export interface ProjectStatusFilter {
+  eq?: string;
+  in?: string[];
+  neq?: string;
+  nin?: string[];
+}
+
+/**
+ * Project filtering options
+ */
+export interface ProjectFilter {
+  projectMilestones?: ProjectMilestoneCollectionFilter;
+  projectUpdates?: ProjectUpdatesCollectionFilter;
+  nextProjectMilestone?: ProjectMilestoneFilter;
+  completedProjectMilestones?: ProjectMilestoneCollectionFilter;
+  and?: ProjectFilter[];
+  or?: ProjectFilter[];
+  status?: ProjectStatusFilter;
+}
+
 export interface SearchProjectsResponse {
   projects: {
-    nodes: Array<ProjectResponse['projectCreate']['project']>;
+    nodes: Array<{
+      id: string;
+      name: string;
+      description?: string;
+      url: string;
+      state: string;
+      teams: {
+        nodes: Array<{
+          id: string;
+          name: string;
+        }>;
+      };
+    }>;
   };
 }

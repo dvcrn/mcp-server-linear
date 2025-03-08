@@ -56,6 +56,7 @@ The server currently supports the following operations:
 ### Project Management
 - ✅ Create projects with associated issues
 - ✅ Get project information
+- ✅ List all projects with optional filtering
 - ✅ Associate issues with projects
 
 ### Team Management
