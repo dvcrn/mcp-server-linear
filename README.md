@@ -23,7 +23,7 @@ An MCP server for interacting with Linear's API. This server provides a set of t
      "mcpServers": {
        "linear": {
          "command": "npx",
-         "args": ["linear-mcp"],
+         "args": ["mcp-server-linear"],
          "env": {
            "LINEAR_ACCESS_TOKEN": "your_linear_api_token_here"
          },
@@ -36,7 +36,7 @@ An MCP server for interacting with Linear's API. This server provides a set of t
 
 That's it! The server will be automatically downloaded and run through npx when needed.
 
-If you use Cline/Roo, you can also simply tell it `install the MCP from https://github.com/dvcrn/linear-mcp` and it'll do the rest.
+If you use Cline/Roo, you can also simply tell it `install the MCP from https://github.com/dvcrn/mcp-server-linear` and it'll do the rest.
 
 **Note**: Replace `your_linear_api_token_here` with the API token you generated in step 1.
 
@@ -111,7 +111,7 @@ You can connect to multiple Linear workspaces by adding the Linear MCP server mu
   "mcpServers": {
     "company1-linear": {
       "command": "npx",
-      "args": ["linear-mcp"],
+      "args": ["mcp-server-linear"],
       "env": {
         "LINEAR_ACCESS_TOKEN": "your_company1_linear_token_here",
         "TOOL_PREFIX": "company1"
@@ -121,7 +121,7 @@ You can connect to multiple Linear workspaces by adding the Linear MCP server mu
     },
     "company2-linear": {
       "command": "npx",
-      "args": ["linear-mcp"],
+      "args": ["mcp-server-linear"],
       "env": {
         "LINEAR_ACCESS_TOKEN": "your_company2_linear_token_here",
         "TOOL_PREFIX": "company2"
@@ -131,7 +131,7 @@ You can connect to multiple Linear workspaces by adding the Linear MCP server mu
     },
     "company3-linear": {
       "command": "npx",
-      "args": ["linear-mcp"],
+      "args": ["mcp-server-linear"],
       "env": {
         "LINEAR_ACCESS_TOKEN": "your_company3_linear_token_here",
         "TOOL_PREFIX": "company3"
