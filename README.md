@@ -36,6 +36,8 @@ An MCP server for interacting with Linear's API. This server provides a set of t
 
 That's it! The server will be automatically downloaded and run through npx when needed.
 
+If you use Cline/Roo, you can also simply tell it `install the MCP from https://github.com/dvcrn/linear-mcp` and it'll do the rest.
+
 **Note**: Replace `your_linear_api_token_here` with the API token you generated in step 1.
 
 ## Available Actions
