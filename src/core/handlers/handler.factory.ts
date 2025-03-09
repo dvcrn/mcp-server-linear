@@ -142,6 +142,36 @@ export class HandlerFactory {
           : undefined,
       },
 
+      // Project Milestone tools
+      [getToolName("linear_get_project_milestones")]: {
+        handler: this.projectHandler,
+        method: "handleGetProjectMilestones",
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
+      },
+      [getToolName("linear_create_project_milestone")]: {
+        handler: this.projectHandler,
+        method: "handleCreateProjectMilestone",
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
+      },
+      [getToolName("linear_update_project_milestone")]: {
+        handler: this.projectHandler,
+        method: "handleUpdateProjectMilestone",
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
+      },
+      [getToolName("linear_delete_project_milestone")]: {
+        handler: this.projectHandler,
+        method: "handleDeleteProjectMilestone",
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
+      },
+
       // Team tools
       [getToolName("linear_get_teams")]: {
         handler: this.teamHandler,

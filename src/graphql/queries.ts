@@ -183,6 +183,91 @@ export const GET_PROJECT_QUERY = gql`
           name
         }
       }
+      projectMilestones {
+        nodes {
+          id
+          name
+          description
+          targetDate
+          progress
+          sortOrder
+          archivedAt
+          createdAt
+          updatedAt
+          currentProgress
+          progressHistory
+          descriptionState
+          documentContent {
+            content
+          }
+          project {
+            id
+            name
+          }
+          issues {
+            nodes {
+              id
+              identifier
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PROJECT_MILESTONES = gql`
+  query GetProjectMilestones(
+    $filter: ProjectMilestoneFilter
+    $first: Int
+    $after: String
+    $last: Int
+    $before: String
+    $includeArchived: Boolean
+    $orderBy: PaginationOrderBy
+  ) {
+    projectMilestones(
+      filter: $filter
+      first: $first
+      after: $after
+      last: $last
+      before: $before
+      includeArchived: $includeArchived
+      orderBy: $orderBy
+    ) {
+      nodes {
+        id
+        name
+        description
+        targetDate
+        progress
+        sortOrder
+        archivedAt
+        createdAt
+        updatedAt
+        currentProgress
+        progressHistory
+        descriptionState
+        documentContent {
+          content
+        }
+        project {
+          id
+          name
+        }
+        issues {
+          nodes {
+            id
+            identifier
+            title
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
     }
   }
 `;

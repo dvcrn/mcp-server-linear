@@ -137,4 +137,88 @@ export class ProjectHandler extends BaseHandler {
       this.handleError(error, "list projects");
     }
   }
+
+  /**
+   * Get project milestones with filtering and pagination
+   */
+  async handleGetProjectMilestones(args: any): Promise<BaseToolResponse> {
+    try {
+      const client = this.verifyAuth();
+      this.validateRequiredParams(args, ["projectId"]);
+
+      const result = await client.getProjectMilestones(
+        args.projectId,
+        args.filter,
+        args.first,
+        args.after,
+        args.last,
+        args.before,
+        args.includeArchived,
+        args.orderBy
+      );
+
+      return this.createJsonResponse(result);
+    } catch (error) {
+      this.handleError(error, "get project milestones");
+    }
+  }
+
+  /**
+   * Create a new project milestone
+   */
+  async handleCreateProjectMilestone(args: any): Promise<BaseToolResponse> {
+    try {
+      const client = this.verifyAuth();
+      this.validateRequiredParams(args, ["projectId", "name"]);
+
+      const result = await client.createProjectMilestone({
+        projectId: args.projectId,
+        name: args.name,
+        description: args.description,
+        targetDate: args.targetDate,
+        sortOrder: args.sortOrder,
+      });
+
+      return this.createJsonResponse(result);
+    } catch (error) {
+      this.handleError(error, "create project milestone");
+    }
+  }
+
+  /**
+   * Update a project milestone
+   */
+  async handleUpdateProjectMilestone(args: any): Promise<BaseToolResponse> {
+    try {
+      const client = this.verifyAuth();
+      this.validateRequiredParams(args, ["id"]);
+
+      const result = await client.updateProjectMilestone(args.id, {
+        name: args.name,
+        description: args.description,
+        targetDate: args.targetDate,
+        sortOrder: args.sortOrder,
+      });
+
+      return this.createJsonResponse(result);
+    } catch (error) {
+      this.handleError(error, "update project milestone");
+    }
+  }
+
+  /**
+   * Delete a project milestone
+   */
+  async handleDeleteProjectMilestone(args: any): Promise<BaseToolResponse> {
+    try {
+      const client = this.verifyAuth();
+      this.validateRequiredParams(args, ["id"]);
+
+      const result = await client.deleteProjectMilestone(args.id);
+
+      return this.createJsonResponse(result);
+    } catch (error) {
+      this.handleError(error, "delete project milestone");
+    }
+  }
 }

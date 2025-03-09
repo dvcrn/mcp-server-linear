@@ -122,3 +122,86 @@ export const CREATE_ISSUE_LABELS = gql`
     }
   }
 `;
+
+export const CREATE_PROJECT_MILESTONE = gql`
+  mutation CreateProjectMilestone($input: ProjectMilestoneCreateInput!) {
+    projectMilestoneCreate(input: $input) {
+      success
+      projectMilestone {
+        id
+        name
+        description
+        targetDate
+        progress
+        sortOrder
+        archivedAt
+        createdAt
+        updatedAt
+        currentProgress
+        progressHistory
+        descriptionState
+        documentContent {
+          content
+        }
+        project {
+          id
+          name
+        }
+        issues {
+          nodes {
+            id
+            identifier
+            title
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_PROJECT_MILESTONE = gql`
+  mutation UpdateProjectMilestone(
+    $id: String!
+    $input: ProjectMilestoneUpdateInput!
+  ) {
+    projectMilestoneUpdate(id: $id, input: $input) {
+      success
+      projectMilestone {
+        id
+        name
+        description
+        targetDate
+        progress
+        sortOrder
+        archivedAt
+        createdAt
+        updatedAt
+        currentProgress
+        progressHistory
+        descriptionState
+        documentContent {
+          content
+        }
+        project {
+          id
+          name
+        }
+        issues {
+          nodes {
+            id
+            identifier
+            title
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const DELETE_PROJECT_MILESTONE = gql`
+  mutation DeleteProjectMilestone($id: String!) {
+    projectMilestoneDelete(id: $id) {
+      success
+    }
+  }
+`;

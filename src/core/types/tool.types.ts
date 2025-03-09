@@ -619,4 +619,162 @@ export const toolSchemas = {
       required: ["attachmentId"],
     },
   },
+  // Linear Project Milestone Tools
+  [getToolName("linear_get_project_milestones")]: {
+    name: getToolName("linear_get_project_milestones"),
+    description: getToolDescription(
+      "Get milestones for a project with filtering and pagination"
+    ),
+    inputSchema: {
+      type: "object",
+      properties: {
+        projectId: {
+          type: "string",
+          description: "Project ID to get milestones for",
+        },
+        filter: {
+          type: "object",
+          properties: {
+            name: {
+              type: "object",
+              properties: {
+                eq: { type: "string", description: "Equal to" },
+                contains: { type: "string", description: "Contains string" },
+              },
+              description: "Filter by milestone name",
+            },
+            targetDate: {
+              type: "object",
+              properties: {
+                lt: { type: "string", description: "Less than date" },
+                gt: { type: "string", description: "Greater than date" },
+              },
+              description: "Filter by target date",
+            },
+            completed: {
+              type: "boolean",
+              description: "Filter by completion status",
+            },
+          },
+          description: "Optional filter criteria",
+          optional: true,
+        },
+        first: {
+          type: "number",
+          description: "Number of items to return (used with after)",
+          optional: true,
+        },
+        after: {
+          type: "string",
+          description: "Cursor for forward pagination",
+          optional: true,
+        },
+        last: {
+          type: "number",
+          description: "Number of items to return (used with before)",
+          optional: true,
+        },
+        before: {
+          type: "string",
+          description: "Cursor for backward pagination",
+          optional: true,
+        },
+        includeArchived: {
+          type: "boolean",
+          description: "Include archived milestones",
+          optional: true,
+        },
+        orderBy: {
+          type: "string",
+          description: "Field to order by (createdAt or updatedAt)",
+          optional: true,
+        },
+      },
+      required: ["projectId"],
+    },
+  },
+
+  [getToolName("linear_create_project_milestone")]: {
+    name: getToolName("linear_create_project_milestone"),
+    description: getToolDescription("Create a new project milestone"),
+    inputSchema: {
+      type: "object",
+      properties: {
+        projectId: {
+          type: "string",
+          description: "Project ID to create milestone for",
+        },
+        name: {
+          type: "string",
+          description: "Milestone name",
+        },
+        description: {
+          type: "string",
+          description: "Milestone description",
+          optional: true,
+        },
+        targetDate: {
+          type: "string",
+          description: "Target completion date (ISO format)",
+          optional: true,
+        },
+        sortOrder: {
+          type: "number",
+          description: "Sort order for the milestone",
+          optional: true,
+        },
+      },
+      required: ["projectId", "name"],
+    },
+  },
+
+  [getToolName("linear_update_project_milestone")]: {
+    name: getToolName("linear_update_project_milestone"),
+    description: getToolDescription("Update a project milestone"),
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "Milestone ID to update",
+        },
+        name: {
+          type: "string",
+          description: "New milestone name",
+          optional: true,
+        },
+        description: {
+          type: "string",
+          description: "New milestone description",
+          optional: true,
+        },
+        targetDate: {
+          type: "string",
+          description: "New target completion date (ISO format)",
+          optional: true,
+        },
+        sortOrder: {
+          type: "number",
+          description: "New sort order",
+          optional: true,
+        },
+      },
+      required: ["id"],
+    },
+  },
+
+  [getToolName("linear_delete_project_milestone")]: {
+    name: getToolName("linear_delete_project_milestone"),
+    description: getToolDescription("Delete a project milestone"),
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "Milestone ID to delete",
+        },
+      },
+      required: ["id"],
+    },
+  },
 };

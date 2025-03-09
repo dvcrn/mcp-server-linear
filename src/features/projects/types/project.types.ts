@@ -64,12 +64,53 @@ export interface ProjectMilestoneCollectionFilter {
   none?: ProjectMilestoneFilter;
 }
 
+export interface ProjectMilestone {
+  id: string;
+  name: string;
+  description?: string;
+  targetDate?: string;
+  progress: number;
+  sortOrder: number;
+  archivedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  currentProgress: Record<string, any>;
+  progressHistory: Record<string, any>;
+  descriptionState?: string;
+  documentContent?: {
+    content: string;
+  };
+  project: {
+    id: string;
+    name: string;
+  };
+  issues?: {
+    nodes: Array<{
+      id: string;
+      identifier: string;
+      title: string;
+    }>;
+  };
+}
+
+export interface ProjectMilestoneConnection {
+  nodes: ProjectMilestone[];
+  pageInfo: {
+    hasNextPage: boolean;
+    endCursor?: string;
+  };
+}
+
 /**
  * Filter for project milestone
  */
 export interface ProjectMilestoneFilter {
-  id?: string;
-  // Add other milestone fields as needed
+  id?: { eq?: string; in?: string[] };
+  name?: { eq?: string; contains?: string };
+  targetDate?: { eq?: string; lt?: string; gt?: string };
+  completed?: { eq?: boolean };
+  createdAt?: { gt?: string; lt?: string };
+  updatedAt?: { gt?: string; lt?: string };
 }
 
 /**
@@ -126,6 +167,11 @@ export interface SearchProjectsResponse {
           name: string;
         }>;
       };
+      projectMilestones?: ProjectMilestoneConnection;
     }>;
   };
+}
+
+export interface GetProjectMilestonesResponse {
+  projectMilestones: ProjectMilestoneConnection;
 }

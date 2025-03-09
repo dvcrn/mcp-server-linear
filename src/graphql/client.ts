@@ -17,6 +17,8 @@ import {
   ProjectResponse,
   SearchProjectsResponse,
   ProjectFilter,
+  GetProjectMilestonesResponse,
+  ProjectMilestone,
 } from "../features/projects/types/project.types.js";
 import {
   TeamResponse,
@@ -213,5 +215,67 @@ export class LinearGraphQLClient {
   async deleteIssues(ids: string[]): Promise<DeleteIssueResponse> {
     const { DELETE_ISSUES_MUTATION } = await import("./mutations.js");
     return this.execute<DeleteIssueResponse>(DELETE_ISSUES_MUTATION, { ids });
+  }
+
+  // Get project milestones
+  async getProjectMilestones(
+    projectId: string,
+    filter?: Record<string, any>,
+    first?: number,
+    after?: string,
+    last?: number,
+    before?: string,
+    includeArchived?: boolean,
+    orderBy?: string
+  ): Promise<GetProjectMilestonesResponse> {
+    const { GET_PROJECT_MILESTONES } = await import("./queries.js");
+    return this.execute<GetProjectMilestonesResponse>(GET_PROJECT_MILESTONES, {
+      projectId,
+      filter,
+      first,
+      after,
+      last,
+      before,
+      includeArchived,
+      orderBy,
+    });
+  }
+
+  // Create a project milestone
+  async createProjectMilestone(input: {
+    projectId: string;
+    name: string;
+    description?: string;
+    targetDate?: string;
+    sortOrder?: number;
+  }): Promise<{
+    projectMilestoneCreate: { success: boolean; milestone: ProjectMilestone };
+  }> {
+    const { CREATE_PROJECT_MILESTONE } = await import("./mutations.js");
+    return this.execute(CREATE_PROJECT_MILESTONE, { input });
+  }
+
+  // Update a project milestone
+  async updateProjectMilestone(
+    id: string,
+    input: {
+      name?: string;
+      description?: string;
+      targetDate?: string;
+      sortOrder?: number;
+    }
+  ): Promise<{
+    projectMilestoneUpdate: { success: boolean; milestone: ProjectMilestone };
+  }> {
+    const { UPDATE_PROJECT_MILESTONE } = await import("./mutations.js");
+    return this.execute(UPDATE_PROJECT_MILESTONE, { id, input });
+  }
+
+  // Delete a project milestone
+  async deleteProjectMilestone(
+    id: string
+  ): Promise<{ projectMilestoneDelete: { success: boolean } }> {
+    const { DELETE_PROJECT_MILESTONE } = await import("./mutations.js");
+    return this.execute(DELETE_PROJECT_MILESTONE, { id });
   }
 }
