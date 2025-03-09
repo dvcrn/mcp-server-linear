@@ -60,6 +60,8 @@ The server currently supports the following operations:
 - ✅ Get project information
 - ✅ List all projects with optional filtering
 - ✅ Associate issues with projects
+- ✅ Project milestone management (create, update, delete)
+- ✅ List and filter project milestones
 
 ### Team Management
 - ✅ Get team information (with states and workflow details)
@@ -89,6 +91,7 @@ The following features are currently being worked on:
 - 🚧 Cycle/milestone management
 
 ### Project Management
+- ✅ Project milestone management
 - 🚧 Project template support
 - 🚧 Advanced project operations
 
