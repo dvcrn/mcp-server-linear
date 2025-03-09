@@ -196,7 +196,50 @@ npm run build
 
 7. **Testing**: Always test your tool with various inputs to ensure it handles different scenarios correctly.
 
-## Common Pitfalls
+## Tool Schema Documentation (src/core/types/tool.types.ts)
+
+Whenever modifying the API, adding/editing handlers, or making any changes to tool functionality, it's critical to maintain comprehensive documentation in `tool.types.ts`. This file serves as the primary interface documentation for all MCP tools.
+
+## Documentation Guidelines
+
+1. **Description Completeness**: Each tool's description should clearly explain:
+   - What the tool does
+   - When to use it
+   - Any important side effects or considerations
+   - Links to relevant API documentation when applicable
+
+2. **Input Schema Documentation**: For each parameter in the inputSchema:
+   - Provide clear, specific descriptions
+   - Document all possible values and their meanings
+   - Include format requirements (e.g., UUID format, number ranges)
+   - Note relationships between fields when they exist
+   - Mark optional fields appropriately
+
+3. **Examples**: When possible, include example usage in the schema to demonstrate:
+   - Common use cases
+   - Parameter combinations
+   - Expected formats
+
+4. **Response Documentation**: While not part of the schema, the handler implementations should maintain consistent response formats as documented in the handler files.
+
+## Example of Good Schema Documentation:
+```typescript
+[getToolName("tool_name")]: {
+  name: getToolName("tool_name"),
+  description: getToolDescription("Clear description of purpose and usage"),
+  inputSchema: {
+    type: "object",
+    properties: {
+      parameter: {
+        type: "string",
+        description: "Detailed explanation including format, constraints, and usage context",
+      }
+    }
+  }
+}
+```
+
+# Common Pitfalls
 
 1. Using incorrect field names in GraphQL queries (e.g., using `identifier` when the API expects `number`)
 2. Not converting types properly (e.g., forgetting to convert string IDs to numbers when required)
@@ -204,5 +247,8 @@ npm run build
 4. Forgetting to register the tool in the handler factory
 5. Not handling error cases properly
 6. Not updating all necessary files when adding a new tool
+7. Insufficient or unclear parameter descriptions in tool.types.ts
+8. Missing format requirements or constraints in parameter documentation
+9. Lack of examples for complex tool usage
 
-Remember to always check the API documentation and schema when implementing new tools to ensure compatibility with the external service.
+Remember to always check the API documentation and schema when implementing new tools to ensure compatibility with the external service. Most importantly, maintain clear and comprehensive documentation in tool.types.ts as it serves as the primary interface documentation for users of the MCP tools.

@@ -14,7 +14,7 @@ An MCP server for interacting with Linear's API. This server provides a set of t
 
 1. Open your Cline MCP settings file:
    - macOS: `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
-   - Windows: `%APPDATA%/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
+   - Windows: `%APPDATA%/Code/User/GlobalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
    - Linux: `~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
 
 2. Add the Linear MCP server configuration:
@@ -45,7 +45,7 @@ If you use Cline/Roo, you can also simply tell it `install the MCP from https://
 The server currently supports the following operations:
 
 ### Issue Management
-- ✅ Create issues with full field support (title, description, team, project, etc.)
+- ✅ Create issues with full field support (title, description, team, project, parent/child relationships, etc.)
 - ✅ Update existing issues (priority, description, etc.)
 - ✅ Delete issues (single or bulk deletion)
 - ✅ Search issues with filtering and by identifier
@@ -99,6 +99,24 @@ The following features are currently being worked on:
 - 🚧 Rate limiting
 - 🚧 Detailed logging
 - 🚧 Load testing and optimization
+
+## Parent/Child Issue Relationships
+
+The server supports creating and managing hierarchical relationships between issues:
+
+### Creating Sub-issues
+You can create sub-issues by specifying a parent issue's UUID when creating a new issue:
+
+```json
+{
+  "title": "Sub-task Implementation",
+  "description": "Implement this specific part of the parent task",
+  "teamId": "team_uuid",
+  "parentId": "parent_issue_uuid"
+}
+```
+
+Note: The parentId must be the UUID of the parent issue, not the issue identifier (e.g., use the UUID, not "ENG-123").
 
 ## Using Multiple Linear Workspaces
 

@@ -11,6 +11,7 @@ export interface CreateIssueInput {
   assigneeId?: string;
   priority?: number;
   projectId?: string;
+  parentId?: string; // UUID of the parent issue
 }
 
 export interface CreateIssuesInput {
@@ -93,6 +94,18 @@ export interface Issue {
       id: string;
       name: string;
       color: string;
+    }[];
+  };
+  parent?: {
+    id: string;
+    identifier: string;
+    title: string;
+  };
+  children?: {
+    nodes: {
+      id: string;
+      identifier: string;
+      title: string;
     }[];
   };
   createdAt?: string;

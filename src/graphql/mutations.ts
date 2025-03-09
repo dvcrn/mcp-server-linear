@@ -17,6 +17,18 @@ export const CREATE_ISSUE_MUTATION = gql`
           id
           name
         }
+        parent {
+          id
+          identifier
+          title
+        }
+        children {
+          nodes {
+            id
+            identifier
+            title
+          }
+        }
       }
     }
   }

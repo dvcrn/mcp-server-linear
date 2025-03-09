@@ -45,13 +45,28 @@ export class IssueHandler extends BaseHandler implements IssueHandlerMethods {
 
       const issue = result.issueCreate.issue;
 
-      return this.createResponse(
-        `Successfully created issue\n` +
-          `Issue: ${issue.identifier}\n` +
-          `Title: ${issue.title}\n` +
-          `URL: ${issue.url}\n` +
-          `Project: ${issue.project ? issue.project.name : "None"}`
-      );
+      const parentInfo = issue.parent
+        ? `Parent: ${issue.parent.identifier} (${issue.parent.title})\n`
+        : "";
+      const childrenInfo = issue.children?.nodes?.length
+        ? `Children:\n${issue.children.nodes
+            .map((child) => `- ${child.identifier}: ${child.title}`)
+            .join("\n")}\n`
+        : "";
+
+      return this.createJsonResponse({
+        issueCreate: {
+          success: true,
+          issue: {
+            identifier: issue.identifier,
+            title: issue.title,
+            url: issue.url,
+            project: issue.project,
+            parent: issue.parent,
+            children: issue.children,
+          },
+        },
+      });
     } catch (error) {
       this.handleError(error, "create issue");
     }
@@ -194,24 +209,7 @@ export class IssueHandler extends BaseHandler implements IssueHandlerMethods {
         "updatedAt"
       )) as SearchIssuesResponse;
 
-      if (!result.issues.nodes.length) {
-        return this.createResponse(
-          `No issues found with identifiers: ${args.identifiers.join(", ")}`
-        );
-      }
-
-      const formattedResponse = result.issues.nodes
-        .map(
-          (issue: Issue) =>
-            `${issue.identifier}: ${issue.title}\n` +
-            (issue.state ? `Status: ${issue.state.name}\n` : "") +
-            `URL: ${issue.url}\n` +
-            (issue.assignee ? `Assignee: ${issue.assignee.name}\n` : "") +
-            (issue.project ? `Project: ${issue.project.name}\n` : "")
-        )
-        .join("\n");
-
-      return this.createResponse(formattedResponse);
+      return this.createJsonResponse(result);
     } catch (error) {
       this.handleError(error, "search issues by identifier");
     }

@@ -72,11 +72,16 @@ export const toolSchemas = {
         },
         teamId: {
           type: "string",
-          description: "Team ID",
+          description: "Team ID (UUID)",
+        },
+        parentId: {
+          type: "string",
+          description: "Parent issue ID (UUID, not issue identifier)",
+          optional: true,
         },
         assigneeId: {
           type: "string",
-          description: "Assignee user ID",
+          description: "Assignee user ID (UUID)",
           optional: true,
         },
         priority: {
@@ -210,7 +215,8 @@ export const toolSchemas = {
           items: {
             type: "string",
           },
-          description: "List of issue IDs to update",
+          description:
+            "List of issue UUIDs to update (not issue identifiers like 'ENG-123')",
         },
         update: {
           type: "object",
@@ -348,7 +354,7 @@ export const toolSchemas = {
       properties: {
         id: {
           type: "string",
-          description: "Issue identifier (e.g., ENG-123)",
+          description: "Issue UUID (not issue identifier like 'ENG-123')",
         },
       },
       required: ["id"],
