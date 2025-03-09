@@ -88,7 +88,6 @@ The following features are currently being worked on:
 
 ### Metadata Operations
 - 🚧 Label management (create/update/assign)
-- 🚧 Cycle/milestone management
 
 ### Project Management
 - ✅ Project milestone management
