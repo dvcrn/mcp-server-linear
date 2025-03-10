@@ -370,24 +370,6 @@ export const toolSchemas = {
     },
   },
 
-  [getToolName("linear_delete_issues")]: {
-    name: getToolName("linear_delete_issues"),
-    description: getToolDescription("Delete multiple issues"),
-    inputSchema: {
-      type: "object",
-      properties: {
-        ids: {
-          type: "array",
-          items: {
-            type: "string",
-          },
-          description: "List of issue identifiers to delete",
-        },
-      },
-      required: ["ids"],
-    },
-  },
-
   [getToolName("linear_get_project")]: {
     name: getToolName("linear_get_project"),
     description: getToolDescription("Get project information"),
