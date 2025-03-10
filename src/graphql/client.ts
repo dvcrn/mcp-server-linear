@@ -60,12 +60,10 @@ export class LinearGraphQLClient {
   }
 
   // Create multiple issues
-  async createIssues(
-    issues: CreateIssueInput[]
-  ): Promise<CreateIssuesResponse> {
-    const { CREATE_ISSUES_MUTATION } = await import("./mutations.js");
-    return this.execute<CreateIssuesResponse>(CREATE_ISSUES_MUTATION, {
-      input: issues,
+  async createIssues(issues: CreateIssueInput[]): Promise<IssueBatchResponse> {
+    const { CREATE_BATCH_ISSUES } = await import("./mutations.js");
+    return this.execute<IssueBatchResponse>(CREATE_BATCH_ISSUES, {
+      input: { issues },
     });
   }
 
@@ -73,16 +71,6 @@ export class LinearGraphQLClient {
   async createProject(input: ProjectInput): Promise<ProjectResponse> {
     const { CREATE_PROJECT } = await import("./mutations.js");
     return this.execute<ProjectResponse>(CREATE_PROJECT, { input });
-  }
-
-  // Create batch of issues
-  async createBatchIssues(
-    issues: CreateIssueInput[]
-  ): Promise<IssueBatchResponse> {
-    const { CREATE_BATCH_ISSUES } = await import("./mutations.js");
-    return this.execute<IssueBatchResponse>(CREATE_BATCH_ISSUES, {
-      input: { issues },
-    });
   }
 
   // Helper method to create a project with associated issues
@@ -103,7 +91,7 @@ export class LinearGraphQLClient {
       projectId: projectResult.projectCreate.project.id,
     }));
 
-    const issuesResult = await this.createBatchIssues(issuesWithProject);
+    const issuesResult = await this.createIssues(issuesWithProject);
 
     if (!issuesResult.issueBatchCreate.success) {
       throw new Error("Failed to create issues");
