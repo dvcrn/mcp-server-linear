@@ -60,6 +60,10 @@ export interface SearchIssuesByIdentifierInput {
   identifiers: string[];
 }
 
+export interface GetIssueInput {
+  identifier: string;
+}
+
 export interface DeleteIssueInput {
   id: string;
 }

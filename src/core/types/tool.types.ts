@@ -334,6 +334,23 @@ export const toolSchemas = {
     },
   },
 
+  [getToolName("linear_get_issue")]: {
+    name: getToolName("linear_get_issue"),
+    description: getToolDescription(
+      "Get a single issue by identifier, including all comments"
+    ),
+    inputSchema: {
+      type: "object",
+      properties: {
+        identifier: {
+          type: "string",
+          description: "Issue identifier (e.g., 'ENG-123')",
+        },
+      },
+      required: ["identifier"],
+    },
+  },
+
   // Linear Team Management Tools
   [getToolName("linear_get_teams")]: {
     name: getToolName("linear_get_teams"),

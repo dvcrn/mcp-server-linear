@@ -17,6 +17,7 @@ import {
   DeleteIssueResponse,
   Issue,
   IssueBatchResponse,
+  GetIssueInput,
 } from "../types/issue.types.js";
 import { DocumentNode } from "graphql";
 
@@ -212,6 +213,34 @@ export class IssueHandler extends BaseHandler implements IssueHandlerMethods {
       return this.createJsonResponse(result);
     } catch (error) {
       this.handleError(error, "search issues by identifier");
+    }
+  }
+
+  /**
+   * Get a single issue by identifier, including all comments
+   */
+  async handleGetIssue(args: GetIssueInput): Promise<BaseToolResponse> {
+    try {
+      const client = this.verifyAuth();
+      this.validateRequiredParams(args, ["identifier"]);
+
+      // Use the same query as search by identifier but with a single identifier
+      const result = (await client.searchIssues(
+        { identifier: { in: [args.identifier] } },
+        1,
+        undefined,
+        "updatedAt"
+      )) as SearchIssuesResponse;
+
+      if (!result.issues.nodes || result.issues.nodes.length === 0) {
+        throw new Error(`Issue ${args.identifier} not found`);
+      }
+
+      return this.createJsonResponse({
+        issue: result.issues.nodes[0]
+      });
+    } catch (error) {
+      this.handleError(error, "get issue");
     }
   }
 

@@ -98,6 +98,24 @@ export const GET_ISSUES_BY_IDENTIFIER = gql`
             color
           }
         }
+        comments {
+          nodes {
+            id
+            body
+            user {
+              id
+              name
+              email
+            }
+            createdAt
+            updatedAt
+            resolvedAt
+            resolvingComment {
+              id
+              body
+            }
+          }
+        }
         createdAt
         updatedAt
       }

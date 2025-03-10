@@ -13,6 +13,7 @@ export interface ToolHandler {
   handleBulkUpdateIssues(args: any): Promise<BaseToolResponse>;
   handleSearchIssues(args: any): Promise<BaseToolResponse>;
   handleSearchIssuesByIdentifier(args: any): Promise<BaseToolResponse>;
+  handleGetIssue(args: any): Promise<BaseToolResponse>;
   handleDeleteIssue(args: any): Promise<BaseToolResponse>;
   handleDeleteIssues(args: any): Promise<BaseToolResponse>;
 
