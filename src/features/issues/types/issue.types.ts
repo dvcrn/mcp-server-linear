@@ -8,10 +8,13 @@ export interface CreateIssueInput {
   title: string;
   description: string;
   teamId: string;
+  parentId?: string; // UUID of the parent issue
+  labelIds?: string[]; // Label UUIDs to apply
   assigneeId?: string;
   priority?: number;
   projectId?: string;
-  parentId?: string; // UUID of the parent issue
+  createAsUser?: string; // Name to display for the created issue
+  displayIconUrl?: string; // URL of the avatar to display
 }
 
 export interface CreateIssuesInput {

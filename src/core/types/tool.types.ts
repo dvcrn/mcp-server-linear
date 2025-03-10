@@ -79,6 +79,15 @@ export const toolSchemas = {
           description: "Parent issue ID (UUID, not issue identifier)",
           optional: true,
         },
+        labelIds: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+          description:
+            "Label UUIDs to apply, eg ['a1eb5aed-7425-4ea5-98ec-dfab52381e0e']",
+          optional: true,
+        },
         assigneeId: {
           type: "string",
           description: "Assignee user ID (UUID)",
@@ -467,11 +476,11 @@ export const toolSchemas = {
               },
               teamId: {
                 type: "string",
-                description: "Team ID",
+                description: "Team ID (UUID)",
               },
-              projectId: {
+              parentId: {
                 type: "string",
-                description: "Project ID",
+                description: "Parent issue ID (UUID, not issue identifier)",
                 optional: true,
               },
               labelIds: {
@@ -479,7 +488,33 @@ export const toolSchemas = {
                 items: {
                   type: "string",
                 },
-                description: "Label IDs to apply",
+                description:
+                  "Label UUIDs to apply, eg ['a1eb5aed-7425-4ea5-98ec-dfab52381e0e']",
+                optional: true,
+              },
+              assigneeId: {
+                type: "string",
+                description: "Assignee user ID (UUID)",
+                optional: true,
+              },
+              priority: {
+                type: "number",
+                description: "Issue priority (0-4)",
+                optional: true,
+              },
+              projectId: {
+                type: "string",
+                description: "Project ID",
+                optional: true,
+              },
+              createAsUser: {
+                type: "string",
+                description: "Name to display for the created issue",
+                optional: true,
+              },
+              displayIconUrl: {
+                type: "string",
+                description: "URL of the avatar to display",
                 optional: true,
               },
             },

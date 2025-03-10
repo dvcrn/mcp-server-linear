@@ -9,26 +9,6 @@ export const CREATE_ISSUE_MUTATION = gql`
         identifier
         title
         url
-        team {
-          id
-          name
-        }
-        project {
-          id
-          name
-        }
-        parent {
-          id
-          identifier
-          title
-        }
-        children {
-          nodes {
-            id
-            identifier
-            title
-          }
-        }
       }
     }
   }
@@ -43,14 +23,6 @@ export const CREATE_ISSUES_MUTATION = gql`
         identifier
         title
         url
-        team {
-          id
-          name
-        }
-        project {
-          id
-          name
-        }
       }
     }
   }
