@@ -252,6 +252,88 @@ export const toolSchemas = {
     },
   },
 
+  [getToolName("linear_edit_issue")]: {
+    name: getToolName("linear_edit_issue"),
+    description: getToolDescription(
+      "Edit an existing issue, updating any of its fields. Note: When setting projectMilestoneId, you must also set projectId."
+    ),
+    inputSchema: {
+      type: "object",
+      properties: {
+        issueId: {
+          type: "string",
+          description: "Required: The UUID of the issue to update",
+        },
+        title: {
+          type: "string",
+          description: "The issue title",
+          optional: true,
+        },
+        description: {
+          type: "string",
+          description: "The issue description in markdown format",
+          optional: true,
+        },
+        stateId: {
+          type: "string",
+          description: "UUID of the target state",
+          optional: true,
+        },
+        priority: {
+          type: "number",
+          description:
+            "Issue priority (0=No priority, 1=Urgent, 2=High, 3=Normal, 4=Low)",
+          optional: true,
+        },
+        assigneeId: {
+          type: "string",
+          description: "UUID of the user to assign the issue to",
+          optional: true,
+        },
+        labelIds: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+          description: "Array of label UUIDs (replaces existing labels)",
+          optional: true,
+        },
+        projectId: {
+          type: "string",
+          description: "UUID of the project to associate with the issue",
+          optional: true,
+        },
+        projectMilestoneId: {
+          type: "string",
+          description:
+            "UUID of the project milestone to associate with the issue. Note: Requires projectId to be set when using this field",
+          optional: true,
+        },
+        estimate: {
+          type: "number",
+          description: "The estimated complexity points for the issue",
+          optional: true,
+        },
+        dueDate: {
+          type: "string",
+          description: "The due date in YYYY-MM-DD format",
+          optional: true,
+        },
+        parentId: {
+          type: "string",
+          description: "UUID of the parent issue",
+          optional: true,
+        },
+        sortOrder: {
+          type: "number",
+          description: "Position of the issue relative to other issues",
+          optional: true,
+        },
+      },
+      required: ["issueId"],
+    },
+  },
+
   // Linear Search Tools
   [getToolName("linear_search_issues")]: {
     name: getToolName("linear_search_issues"),

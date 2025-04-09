@@ -68,6 +68,22 @@ export interface DeleteIssueInput {
   id: string;
 }
 
+export interface EditIssueInput {
+  issueId: string; // Required: The UUID of the issue to update
+  title?: string;
+  description?: string; // Markdown format
+  stateId?: string; // UUID of the target state
+  priority?: number; // 0=None, 1=Urgent, 2=High, 3=Normal, 4=Low
+  assigneeId?: string; // UUID of the user
+  labelIds?: string[]; // Array of label UUIDs (replaces existing)
+  projectId?: string; // UUID of the project
+  projectMilestoneId?: string; // UUID of the project milestone
+  estimate?: number; // Point estimate
+  dueDate?: string; // Date in "YYYY-MM-DD" format
+  parentId?: string; // UUID of the parent issue
+  sortOrder?: number; // Position relative to other issues
+}
+
 /**
  * Response types for issue operations
  */

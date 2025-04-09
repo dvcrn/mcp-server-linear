@@ -18,6 +18,7 @@ import {
   Issue,
   IssueBatchResponse,
   GetIssueInput,
+  EditIssueInput,
 } from "../types/issue.types.js";
 import { DocumentNode } from "graphql";
 
@@ -237,7 +238,7 @@ export class IssueHandler extends BaseHandler implements IssueHandlerMethods {
       }
 
       return this.createJsonResponse({
-        issue: result.issues.nodes[0]
+        issue: result.issues.nodes[0],
       });
     } catch (error) {
       this.handleError(error, "get issue");
@@ -261,6 +262,78 @@ export class IssueHandler extends BaseHandler implements IssueHandlerMethods {
       return this.createResponse(`Successfully deleted issue ${args.id}`);
     } catch (error) {
       this.handleError(error, "delete issue");
+    }
+  }
+
+  /**
+   * Edits a single issue.
+   */
+  async handleEditIssue(args: EditIssueInput): Promise<BaseToolResponse> {
+    try {
+      const client = this.verifyAuth();
+      this.validateRequiredParams(args, ["issueId"]);
+
+      // Construct the input object for the GraphQL mutation
+      // Only include fields that are actually provided in the args
+      const updateInput: Record<string, any> = {};
+      const optionalFields: (keyof EditIssueInput)[] = [
+        "title",
+        "description",
+        "stateId",
+        "priority",
+        "assigneeId",
+        "labelIds",
+        "projectId",
+        "projectMilestoneId",
+        "estimate",
+        "dueDate",
+        "parentId",
+        "sortOrder",
+      ];
+
+      optionalFields.forEach((field) => {
+        // Check for undefined or null, allowing empty strings and 0
+        if (args[field] !== undefined && args[field] !== null) {
+          updateInput[field] = args[field];
+        }
+      });
+
+      // Check if any update fields were provided besides issueId
+      if (Object.keys(updateInput).length === 0) {
+        throw new Error(
+          "No fields provided to update for issue " + args.issueId
+        );
+      }
+
+      // Call the GraphQL client method (to be implemented in Step 5)
+      // Assuming it returns an object like { issueUpdate: { success: boolean, issue: Issue } }
+      const result = await client.updateIssue(args.issueId, updateInput);
+
+      if (!result?.issueUpdate?.success || !result?.issueUpdate?.issue) {
+        throw new Error(
+          `Failed to update issue ${
+            args.issueId
+          }. API response: ${JSON.stringify(result)}`
+        );
+      }
+
+      const updatedIssue = result.issueUpdate.issue;
+
+      // Return a success response with basic issue details
+      return this.createJsonResponse({
+        issueUpdate: {
+          success: true,
+          issue: {
+            id: updatedIssue.id,
+            identifier: updatedIssue.identifier,
+            title: updatedIssue.title,
+            url: updatedIssue.url,
+            updatedAt: updatedIssue.updatedAt, // Include updatedAt for confirmation
+          },
+        },
+      });
+    } catch (error) {
+      this.handleError(error, "edit issue");
     }
   }
 }

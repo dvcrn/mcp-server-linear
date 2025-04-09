@@ -65,10 +65,43 @@ export const UPDATE_ISSUE_MUTATION = gql`
         id
         identifier
         title
+        description
         url
         state {
+          id
+          name
+          type
+          color
+        }
+        priority
+        estimate
+        dueDate
+        sortOrder
+        assignee {
+          id
           name
         }
+        labels {
+          nodes {
+            id
+            name
+            color
+          }
+        }
+        project {
+          id
+          name
+        }
+        projectMilestone {
+          id
+          name
+        }
+        parent {
+          id
+          identifier
+          title
+        }
+        updatedAt
       }
     }
   }

@@ -90,6 +90,14 @@ export class HandlerFactory {
           ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
           : undefined,
       },
+      [getToolName("linear_edit_issue")]: {
+        handler: this.issueHandler,
+        method: "handleEditIssue",
+        description: process.env.TOOL_PREFIX
+          ? `Tool for ${process.env.TOOL_PREFIX} Linear account`
+          : undefined,
+      },
+
       [getToolName("linear_search_issues")]: {
         handler: this.issueHandler,
         method: "handleSearchIssues",
