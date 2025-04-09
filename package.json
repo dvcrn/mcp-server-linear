@@ -16,6 +16,9 @@
       "default": "./build/index.js"
     }
   },
+  "bin": {
+    "mcp-server-linear": "dist/index.js"
+  },
   "publishConfig": {
     "access": "public"
   },
