@@ -1,6 +1,6 @@
 {
   "name": "mcp-server-linear",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "An MCP server for interacting with Linear's API, providing tools for managing issues, projects, and teams",
   "private": false,
   "repository": {
@@ -17,7 +17,7 @@
     }
   },
   "bin": {
-    "mcp-server-linear": "dist/index.js"
+    "mcp-server-linear": "build/index.js"
   },
   "publishConfig": {
     "access": "public"
