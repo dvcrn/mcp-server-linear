@@ -30,7 +30,7 @@ You can use either a **Developer Token** or a **Personal API Key**.
      "mcpServers": {
        "linear": {
          "command": "npx",
-         "args": ["mcp-server-linear"],
+         "args": ["-y", "mcp-server-linear"],
          "env": {
            "LINEAR_ACCESS_TOKEN": "your_linear_api_token_here"
          },
