@@ -6,9 +6,16 @@ An MCP server for interacting with Linear's API. This server provides a set of t
 
 ### 1. Get Linear API Token
 
-1. Go to Linear: Settings > API > OAuth application > "Cline MCP"
-2. Under "Developer Token", click "Create & copy token"
-3. Select "Application" and copy the generated token
+You can use either a **Developer Token** or a **Personal API Key**.
+
+**Option 1: Developer Token**
+1. Go to Linear: Workspace Settings > API > OAuth application > Create or select an application (e.g., "Cline MCP").
+2. Under "Developer Token", click "Create & copy token".
+3. Select "Application" as the actor and copy the generated token.
+
+**Option 2: Personal API Key**
+1. Go to Linear: Your Personal Settings > API > Personal API Keys.
+2. Click "Create key", give it a label (e.g., "Cline MCP"), and copy the generated key.
 
 ### 2. Configure Cline MCP
 
@@ -38,7 +45,6 @@ That's it! The server will be automatically downloaded and run through npx when 
 
 If you use Cline/Roo, you can also simply tell it `install the MCP from https://github.com/dvcrn/mcp-server-linear` and it'll do the rest.
 
-**Note**: Replace `your_linear_api_token_here` with the API token you generated in step 1.
 
 ## Available Actions
 
